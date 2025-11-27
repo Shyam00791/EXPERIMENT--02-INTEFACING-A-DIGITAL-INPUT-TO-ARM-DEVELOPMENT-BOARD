@@ -1,6 +1,3 @@
-# Name: Shyam V
-# Reg no: 212224220102
-
 # EXPERIMENT--02-INTEFACING-A-DIGITAL-INPUT-TO-ARM-DEVELOPMENT-BOARD
 ## Aim: To Interface a Digital Input  (userpush button  ) to ARM   development board and write a  program to obtain  the data and flash the led  
 ## Components required: STM32 CUBE IDE, ARM IOT development board,  STM programmer tool.
@@ -57,34 +54,40 @@ The full form of an ARM is an advanced reduced instruction set computer (RISC) m
 ```
 #include "main.h"
 #include "stdbool.h"
-
 bool button_status;
+void push_button();
 
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 
+
 int main(void)
 {
   HAL_Init();
-  SystemClock_Config();
-  MX_GPIO_Init();
 
+  SystemClock_Config();
+
+  MX_GPIO_Init();
+ 
   while (1)
   {
-    button_status = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
-
-    if (button_status == GPIO_PIN_RESET)
-    {
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
-      HAL_Delay(1000);
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
-      HAL_Delay(1000);
-    }
-    else
-    {
-      HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
-    }
+	  push_button();
   }
+}
+void push_button()
+{
+	button_status = HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13);
+	if(button_status == 0)
+	{
+		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_SET);
+		 HAL_Delay(1000);
+		 HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+		 HAL_Delay(1000);
+	}
+ else
+    {
+    	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
+    }
 }
 
 void SystemClock_Config(void)
@@ -125,6 +128,7 @@ static void MX_GPIO_Init(void)
 
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
 
+
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
@@ -136,7 +140,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
-
 void Error_Handler(void)
 {
   __disable_irq();
@@ -144,18 +147,22 @@ void Error_Handler(void)
   {
   }
 }
+
+#ifdef  USE_FULL_ASSERT
+
+void assert_failed(uint8_t *file, uint32_t line)
+{
+ 
+}
+#endif
 ```
 
-
-
 ## Output  :
-<img width="1031" height="935" alt="Screenshot 2025-10-14 232229" src="https://github.com/user-attachments/assets/52e0ceff-4a14-400d-8d2b-c61029ad1466" />
+ <img width="1090" height="758" alt="image" src="https://github.com/user-attachments/assets/5ecd3d56-9877-4db9-9318-81aaef89c7c4" />
 
- <img width="1038" height="911" alt="Screenshot 2025-10-14 232247" src="https://github.com/user-attachments/assets/decc4ad7-92fb-4072-8d2c-980e1a71da8f" />
-
-## layout of the circuit 
- <img width="1097" height="902" alt="Screenshot 2025-10-14 232257" src="https://github.com/user-attachments/assets/d2ee3963-c6bc-4382-8bb2-8e7fe0fd17d6" />
-
+## layout of the circuit:
  
+<img width="1093" height="775" alt="image" src="https://github.com/user-attachments/assets/c3811edd-4a19-4968-a58f-db0e88560507" />
+
 ## Result :
 Interfacing a digital Input (Pushbutton ) with ARM microcontroller based IOT development is executed and the results are verified.
